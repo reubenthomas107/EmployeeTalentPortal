@@ -97,7 +97,7 @@ public static String encryptPassword(String password) {
 	return encrypted_password;
 }
 
-public static int employeeRegistration(Connection conn, String email, String firstname, String lastname, Date dob, String fileName, String mobileno, String gender) throws SQLException {
+public static int employeeRegistration(Connection conn, String email, String firstname, String lastname, Date dob, String resume_name, String mobileno, String gender) throws SQLException {
 	String query = "INSERT INTO employee (email_id,first_name,last_name,dob,resume,mobile_no,gender) Values(?,?,?,?,?,?,?)";
 	
 	PreparedStatement stmt = conn.prepareStatement(query);
@@ -105,7 +105,7 @@ public static int employeeRegistration(Connection conn, String email, String fir
 	stmt.setString(2, firstname);
 	stmt.setString(3, lastname);
 	stmt.setDate(4, dob);
-	stmt.setString(5, fileName);
+	stmt.setString(5, resume_name);
 	stmt.setString(6, mobileno);
 	stmt.setString(7, gender);
 	boolean rows = stmt.execute();	
@@ -142,7 +142,7 @@ public static void employeeSubmission(Connection conn, String email, String admi
 }
 
 
-public static void managerUploads(Connection conn, String email, String firstname, String lastname, Date dob, String mobileno, String gender) throws SQLException {
+public static int managerUploads(Connection conn, String email, String firstname, String lastname, Date dob, String mobileno, String gender) throws SQLException {
 	String query = "INSERT INTO employee (email_id,first_name,last_name,dob,mobile_no,gender) VALUES (?,?,?,?,?,?)";
 	PreparedStatement stmt = conn.prepareStatement(query);
 	stmt.setString(1, email);
@@ -155,9 +155,35 @@ public static void managerUploads(Connection conn, String email, String firstnam
 	
 	if(!rows) 
 	{
-		System.out.println("Employee registered successfully. Added to employee DB");
+		System.out.println("Employee "+firstname+" registered successfully. Added to employee DB");
 	}
-		
+	
+	stmt.close();
+	
+	int employee_id=0;
+	String query1 = "SELECT emp_id FROM employee WHERE email_id=?";
+	
+	PreparedStatement stmt1 = conn.prepareStatement(query1);
+	stmt1.setString(1, email);
+	ResultSet rs = stmt1.executeQuery();
+	if (rs.next())
+	{
+		employee_id=rs.getInt("emp_id");
+	}
+	return employee_id;
+	
+}
+
+public static void managerSubmission(Connection conn, int employee_id) throws SQLException {
+	String query = "INSERT INTO registrations (admin_approval_status,emp_id) VALUES (?,?)";
+	PreparedStatement stmt = conn.prepareStatement(query);
+	stmt.setString(1, "Pending");
+	stmt.setInt(2, employee_id);
+	boolean rows = stmt.execute();	
+	
+	if(!rows) {
+		System.out.println("Manager updated registration successfully."+employee_id+" Added to Registrations DB");
+	}
 }
 
 public static void adminApproval(Connection conn, String reg_id) throws SQLException {
@@ -210,5 +236,9 @@ public static void adminRejected(Connection conn, String reg_id) throws SQLExcep
 	stmt.executeUpdate();
 
 }
+
+
+
+
 
 }//ends class

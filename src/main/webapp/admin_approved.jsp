@@ -33,6 +33,7 @@ ResultSet rs = stmt.executeQuery();
 %> 
     
 <%@ include file="admin_navbar.jsp" %>
+<body>
 <main>
 <div class="container my-5">
        <div class="card-body text-center">

@@ -1,19 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
+<%@ include file="manager_navbar.jsp" %>
 <%@ page import="java.sql.*" %>
-<% Class.forName("com.mysql.cj.jdbc.Driver");
-%>   
+<% Class.forName("com.mysql.cj.jdbc.Driver");%>   
 <%
 response.setHeader("Cache-Control","no-cache, no-store, must-revalidate");
 if(session.getAttribute("email_id")==null){
 	response.sendRedirect("login.jsp");
 }
-else if (session.getAttribute("emp_role")!="Admin")
+else if (session.getAttribute("emp_role")!="Manager")
 {
-	if(session.getAttribute("emp_role") == "Manager") 
+	if(session.getAttribute("emp_role") == "Admin") 
 	{
-		response.sendRedirect("manager_dashboard.jsp");
+		response.sendRedirect("admin_dashboard.jsp");
 	}
 	else 
 	{
@@ -26,17 +26,15 @@ else if (session.getAttribute("emp_role")!="Admin")
 Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/employee", "root", "root");
 Statement s = conn.createStatement();
 String email_id = (String) session.getAttribute("email_id");
-String query = "SELECT e.emp_id,e.first_name,e.last_name,e.email_id,e.dob,e.mobile_no,e.resume,registrations.admin_approval_status,registrations.registration_id FROM employee AS e INNER JOIN registrations ON e.emp_id=registrations.emp_id WHERE registrations.admin_approval_status=?";
+String query = "SELECT e.emp_id,e.first_name,e.last_name,e.email_id,e.dob,e.mobile_no,e.resume,registrations.admin_approval_status FROM employee AS e INNER JOIN registrations ON e.emp_id=registrations.emp_id";
 PreparedStatement stmt = conn.prepareStatement(query);
-stmt.setString(1, "Pending");
 ResultSet rs = stmt.executeQuery();
 %> 
-    
-<%@ include file="admin_navbar.jsp" %>
+
 <main>
 <div class="container my-5">
        <div class="card-body text-center">
-    <h4 class="card-title">Pending Approvals</h4>
+    <h4 class="card-title">All Applications</h4>
     <p class="card-text"></p>
   </div>
     <div class="card">
@@ -64,24 +62,8 @@ ResultSet rs = stmt.executeQuery();
                 <td><%= rs.getString(4) %></td>
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
-                <td>
-                <a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="far fa-edit"></i>View</a>
-                </td>
-                 <td>
-                 <form action="AdminApproval" method="post">
-					  <div class="col-6">
-					  <button type="submit" class="btn btn-success btn-rounded btn-xs">Approve</button>
-						<input type="hidden" id="adminapprove" name="adminapprove" value="<%= rs.getString(9) %>"/>
-					  </div>
-				  </form>
-				  <form action="AdminRejected" method="post">
-					  <div class="col-6">
-							<button type="submit" class="btn btn-danger btn-rounded btn-xs">Reject</button>
-							<input type="hidden" id="adminreject" name="adminreject" value="<%= rs.getString(9) %>"/>
-						</div>
-				  </form>
-                    
-                </td>
+                <td><a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="far fa-edit"></i>View</a></td>
+                <td><%= rs.getString(8) %></td>
               </tr>
               
               <% } %>
@@ -97,30 +79,3 @@ ResultSet rs = stmt.executeQuery();
     </div>
 </footer>
 </body>
-<style>
-.navbar-brand{
-margin:0;
-padding:0;
-}
-.logo{
-height:50px;
-padding-right:15px;
-padding-left:5px;
-}
-body{
-    
-    background-repeat:no-repeat;
-    background-size: 100%;
-}
-footer{
-    margin-top: 20px;
-    padding-top: 20px;
-}
-.bg__card__navbar{
-    background-color: #000000;
-}
-.bg__card__footer{
-    background-color: #000000 !important;
-}
-</style>
-</html>
