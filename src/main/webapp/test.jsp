@@ -1,44 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
-
 <body>
-
-	<form action="ManagerUploads" method="POST" enctype="multipart/form-data">
-	<div class="form-group">
+	<div>
 		  <label for="input" id="label">
-			  <ion-icon name="cloud-upload-outline"></ion-icon>
-			  <span id="span">Upload Resume List</span>
-			  <input id="input" name="bulkupload" type="file">
-			</label>
-		<button type="submit">Submit</button>
+		  <ion-icon name="cloud-upload-outline"></ion-icon>
+		  <span id="span">Upload your file here</span>
+		  <input id="input" type="file">
+		</label>
+		<button>Submit</button>
 	  </div>
-	<div class="form-group">
+	<div>
 		<label  id="label">
-			  <a href="download_template.jsp" style ="text-decoration:none";>
-			  <ion-icon name="cloud-download-outline"></ion-icon>
-			  <span id="#">Download Template</span>
-		  		</a>
+		  <ion-icon name="cloud-download-outline"></ion-icon>
+		  <span id="#">Download your file here</span>
 		</label>
 	<button>Download</button>
-	</form>
-	
-	     
-</div>
-
-  <footer >
-  <div class="container bg-info p-5">
-    </div>
-</footer>
+	  </div>
 </body>
-
-
 <style>
 * {
   margin: 0;

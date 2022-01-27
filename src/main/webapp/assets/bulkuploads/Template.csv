@@ -1,1 +1,5 @@
 Email,FirstName,LastName,DOB(yyyy-mm-dd),MobileNo,Gender
+user1@lntinfotech.com,user1,user1,1999-01-07,1234567890,Male
+user2@lntinfotech.com,user2,user2,1999-01-07,9819743560,Male
+user3@lntinfotech.com,user2,user2,1999-01-07,9655144250,Male
+user4@lntinfotech.com,user2,user2,1999-01-07,9819743560,Male

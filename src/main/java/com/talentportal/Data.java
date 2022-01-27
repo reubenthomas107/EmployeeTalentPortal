@@ -2,6 +2,7 @@ package com.talentportal;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -71,28 +72,41 @@ public class Data{
 		return "";
 	}
 
+	public static String generateRandomPassword(int len)
+    {
+  
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
 
-public static String encryptPassword(String password) {
-	String encrypted_password = null;
+        for (int i = 0; i < len; i++)
+        {
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+ 
+        String random_password = sb.toString();
+        return random_password;
+    }
 	
-	try {
-		MessageDigest md = MessageDigest.getInstance("MD5");
 	
-		md.update(password.getBytes());
+	
+	public static String encryptPassword(String password) {
+		String encrypted_password = null;
 		
-		byte[] bytes = md.digest();
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i=0;i<bytes.length;i++) {
-			sb.append(Integer.toString((bytes[i]&0xff)+0x100,16).substring(1));
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(password.getBytes());
+			byte[] bytes = md.digest();	
+			StringBuilder sb = new StringBuilder();
+			for(int i=0;i<bytes.length;i++) {
+				sb.append(Integer.toString((bytes[i]&0xff)+0x100,16).substring(1));
+			}
+			encrypted_password = sb.toString();
 		}
-		encrypted_password = sb.toString();
-	}
-	catch(NoSuchAlgorithmException e) {
-		e.printStackTrace();
-	}
-//	System.out.println(encrypted_password.length());
-//	System.out.println(encrypted_password);
+		catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	
 	return encrypted_password;
 }
@@ -135,6 +149,12 @@ public static void employeeSubmission(Connection conn, String email, String admi
 	stmt.setString(1, admin_status);
 	stmt.setInt(2, employee_id);
 	boolean rows = stmt.execute();	
+	
+	String query1 = "INSERT INTO employee_details (emp_id,profile_img) VALUES (?,?)";
+	PreparedStatement stmt2 = conn.prepareStatement(query1);
+	stmt2.setInt(1, employee_id);
+	stmt2.setString(2, "employee.jpg");
+	stmt2.execute();
 	
 	if(!rows) {
 		System.out.println("Updated registration successfully. Added to Registration DB");
@@ -181,6 +201,11 @@ public static void managerSubmission(Connection conn, int employee_id) throws SQ
 	stmt.setInt(2, employee_id);
 	boolean rows = stmt.execute();	
 	
+	String query1 = "INSERT INTO employee_details (emp_id) VALUES (?)";
+	PreparedStatement stmt2 = conn.prepareStatement(query1);
+	stmt2.setInt(1, employee_id);
+	stmt2.execute();
+	
 	if(!rows) {
 		System.out.println("Manager updated registration successfully."+employee_id+" Added to Registrations DB");
 	}
@@ -208,11 +233,14 @@ public static void adminApproval(Connection conn, String reg_id) throws SQLExcep
 	String email_id = rs.getString(2);
 	
 	//password generation function here
-	
-	String password = encryptPassword("test1234");
+	String random_password = generateRandomPassword(10);
+	System.out.println(random_password);
+	String password = encryptPassword(random_password);
 	userGenerate(conn,emp_id,email_id,password);
 	
 	//mail generation function here
+	
+	
 }
 
 public static void userGenerate(Connection conn, String emp_id, String email_id, String password) throws SQLException {
