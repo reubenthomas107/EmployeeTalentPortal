@@ -62,7 +62,7 @@ ResultSet rs = stmt.executeQuery();
                 <td><%= rs.getString(4) %></td>
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
-                <td><a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="far fa-edit"></i>View</a></td>
+                <td><a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a></td>
                 <td><%= rs.getString(8) %></td>
               </tr>
               
@@ -75,7 +75,7 @@ ResultSet rs = stmt.executeQuery();
 <!---->
 <!---->
 <footer >
-  <div class="container bg-info p-5">
+  <div class="container bg-info">
     </div>
 </footer>
 </body>

@@ -38,27 +38,36 @@ stmt2.setString(1, email_id);
 ResultSet rs1 = stmt2.executeQuery();
 rs1.next();
 
-session.setAttribute("emp_id", rs.getString(1));
+session.setAttribute("emp_id", rs.getInt(1));
 session.setAttribute("old_resume", rs.getString(6));
 session.setAttribute("old_picture", rs1.getString(13));
-%>
 
+%>
+<%
+	String image_link = "";
+	if(rs1.getString(13).equals("employee.jpg"))
+	{
+		image_link = "employee.jpg";
+	}
+	else
+	{
+	image_link = rs.getString(2)+"_"+rs1.getString(13);
+	System.out.println(image_link);
+	}
+%>
 
 
 <%@ include file="employee_navbar.jsp" %>
 
 <div class="row">
-    <div class="col-10 ms-5 mt-5">
-        <h5>Settings</h5>
-    </div>
-    <hr>
-    <div class="container mt-1" style="border: 1px solid black; width: fit-content; border-radius: 5px;">
-     <div class="d-flex mt-5 justify-content-center">
+
+    <div class="container mt-1" style="width: fit-content; border-radius: 5px;">
+     <div class="d-flex mt-3 justify-content-center">
         <div class="col-5 mt-3">
         <div class="px-4 mx-4">
             <div class="card">
                 <div class="card-body">
-                    <center class="m-t-30"> <img src="assets/images/<%= rs1.getString(13) %>" class="rounded-circle" width="150" height="150" />
+                    <center class="m-t-30"> <img src="assets/images/<%= image_link %>" class="rounded-circle" width="150" height="150" />
                         <h4 class="card-title m-t-10"> </h4>
                         <h6 class="card-subtitle" id="name-data-user"><%= rs.getString(3) %> <%= rs.getString(4) %></h6>
                     </center>
@@ -80,8 +89,8 @@ session.setAttribute("old_picture", rs1.getString(13));
         </div>
 
  
-      <div class="container mt-1" style="border: 1px solid black; width: fit-content; border-radius: 5px;">
-		    <h4 class="mt-3 mx-5 text-center">My Profile</h4>
+      <div class="container mt-1" style="border: 0.5px solid black; width: fit-content; border-radius: 5px;">
+		    <h4 class="mt-3 mx-5 text-center lead">Update Profile</h4>
 		
 		
 		    
@@ -92,7 +101,7 @@ session.setAttribute("old_picture", rs1.getString(13));
        
             <div class="col-sm-8">
             <a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(2) %>&filename=<%= rs.getString(6) %>">
-                <input type="text" class="form-control" id="resume" name="resume" value="<%= rs.getString(6) %>" disabled>        
+                <input type="text" class="form-control" id="resume" name="resume" value="<%= rs.getString(6) %>">        
          	</a>
          </div>
         </div>
@@ -102,7 +111,7 @@ session.setAttribute("old_picture", rs1.getString(13));
 
             <label for="image" class="col-sm-3 col-form-label">Update Resume</label>
             <div class="col-sm-8">
-                <input type="file" class="form-control" id="updated_resume" name="updated_resume">
+                <input type="file" class="form-control" id="updated_resume" name="updated_resume" accept="application/pdf, application/msword">
             </div>
         </div>
 		
@@ -130,13 +139,14 @@ session.setAttribute("old_picture", rs1.getString(13));
 		}
 		
 		
+		
 		%>
      
      
         <div class="mb-3 row">
             <div class="mb-3">
                 <label for="image" class="col-sm-3 col-form-label">Profile Picture</label>
-                <img src="assets/images/<%= rs1.getString(13) %>" height="auto" width="150px" alt="No image uploaded">
+                <img src="assets/images/<%= image_link %>" height="auto" width="150px" alt="No image uploaded">
             </div>
 
             <label for="image" class="col-sm-3 col-form-label">Update Image</label>
@@ -160,14 +170,20 @@ session.setAttribute("old_picture", rs1.getString(13));
             </div>
         </div>
 
+		<div class="mb-3 row">
+            <label for="description" class="col-sm-3 col-form-label">Preferred Language</label>
+            <div class="col-sm-8">
+                <input disabled type="text" class="form-control" id="pref" name="pref" value="<%= lang %>">
+            </div>
+        </div>
         <div class="mb-3 row">
             <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Language Preference</label>
+                <label for="staticEmail" class="col-sm-3 col-form-label">Change Language</label>
                 <div class="col-sm-8">
+              
                     <div class="dropdown">
                         <select class="form-select" name="lang" id="lang"
                             style=" height: 100%; width: 100%;">
-                            <option disabled value="<%= lang %>"><%= lang %></option>   
                             <option value="English">English</option>
                             <option value="Hindi">Hindi</option>
                             <option value="Marathi">Marathi</option>

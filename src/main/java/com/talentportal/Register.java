@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -62,18 +64,23 @@ public class Register extends HttpServlet {
 			Period p = Period.between(birthday, today);
 			int age = p.getYears();
 			
+			Pattern pattern = Pattern.compile("^[0-9]{10}$");
+			Matcher matcher = pattern.matcher(mobileno);
+
 			boolean validation=false;
-			if((email.endsWith("@lntinfotech.com")) && (age>18) && (gender.equals("Male") || gender.equals("Female"))){
-				//mobile number validation required
+			if((Data.duplicateValidation(conn, email)) && (email.endsWith("@lntinfotech.com")) && (age>18) && (gender.equals("Male") || gender.equals("Female")) && (matcher.find()))
+			{
 				validation=true;
 			}
-			
+						
 			else 
 			{
 				validation=false;
+				session.setAttribute("registration_failed","Validation Failed!");
 				System.out.println("Validation Failed!");
 			}
-			
+						
+			//validation check
 			if(validation==true) 
 			{
 				int employee_id = Data.employeeRegistration(conn, email, firstname, lastname, dob1, fileName, mobileno, gender);
@@ -81,6 +88,10 @@ public class Register extends HttpServlet {
 				String admin_status = "Pending";
 				Data.employeeSubmission(conn, email, admin_status, employee_id);
 				response.sendRedirect("login.jsp");
+			}
+			else
+			{
+				response.sendRedirect("register.jsp");
 			}
 		}
 		catch(Exception e)

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -31,11 +33,16 @@ public class ManagerUploads extends HttpServlet {
               part.write(filePath);
             }
             
+            
+            Pattern pattern = Pattern.compile("^[0-9]{10}$");
+			
+			
+			
 			Scanner sc = new Scanner(new File(filePath));  
 			//make file link dynamic
 			while (sc.hasNext())  
 			{
-				
+				boolean validation=false;
 				String data = sc.next();
 				String [] Data1 = data.split(",");
 				String email= Data1[0];
@@ -50,8 +57,20 @@ public class ManagerUploads extends HttpServlet {
 					String no= Data1[4];
 					String gender= Data1[5];
 					Date dob=Date.valueOf(Data1[3]);
-					int employee_id = Data.managerUploads(conn,email,fn,ln,dob,no,gender);
-					Data.managerSubmission(conn,employee_id);	
+					Matcher matcher = pattern.matcher(no);
+		
+					if((Data.duplicateValidation(conn, email)) && (email.endsWith("@lntinfotech.com")) && (gender.equals("Male") || gender.equals("Female")) && (matcher.find()))
+					{
+						validation=true;
+						int employee_id = Data.managerUploads(conn,email,fn,ln,dob,no,gender);
+						Data.managerSubmission(conn,employee_id);
+					}
+								
+					else 
+					{
+						System.out.println(fn+" was not added");
+						continue;
+					}
 				}
 			}   
 			sc.close(); 

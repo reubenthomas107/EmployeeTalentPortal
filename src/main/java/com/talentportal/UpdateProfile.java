@@ -1,7 +1,11 @@
 package com.talentportal;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -28,7 +32,7 @@ public class UpdateProfile extends HttpServlet {
 	try {
 			
 			HttpSession session = request.getSession(); 
-			String emp_id=(String)session.getAttribute("emp_id");
+			int emp_id=(int)session.getAttribute("emp_id");
 			String email = (String) session.getAttribute("email_id");
 			String old_resume=(String)session.getAttribute("old_resume");
 			String old_picture=(String)session.getAttribute("old_picture");
@@ -42,20 +46,34 @@ public class UpdateProfile extends HttpServlet {
 			String fileName1 = filePart1.getSubmittedFileName();
 			String fileName2 = filePart2.getSubmittedFileName();
 			
+			Collection<Part> parts = request.getParts();
+			  List<Part> resume = new ArrayList<>(parts.size());
+			  List<Part> image = new ArrayList<>(parts.size());
+			  for (Part part : parts) {
+			    if (part.getName().equals("updated_resume")) 
+			    {
+			      resume.add(part);
+			    }
+			    if (part.getName().equals("updated_image")) 
+			    {
+			      image.add(part);
+			    }
+			  }
+			
 			//for resume
 			if(fileName1.equals(""))
 			{
 				update_resume=old_resume;
 				System.out.println("Resume not updated");
-				System.out.println(update_resume);
 			}
 			else 
 			{
 				update_resume=fileName1;
-				String filePath = "D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\resume\\"+email+"_"+fileName1 ;
-	            for (Part part : request.getParts()) 
+				String filePath = "D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\resume\\"+email+"_"+update_resume ;
+	            for (Part part : resume) 
 	            {
-	              part.write("D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\resume\\"+email+"_"+fileName1 );
+	              System.out.println(part.getName());
+	              part.write("D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\resume\\"+email+"_"+update_resume );
 	            }
 			}
 			
@@ -64,21 +82,24 @@ public class UpdateProfile extends HttpServlet {
 			{
 				update_photo=old_picture;
 				System.out.println("Image not updated");
-				System.out.println(update_photo);
 			}
 			else
 			{
 				update_photo=fileName2;
-				String filePath2 = "D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\images\\"+email+"_"+fileName2 ;
-	            for (Part part : request.getParts()) 
+				String filePath2 = "D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\images\\"+email+"_"+update_photo ;
+	            for (Part part : image) 
 	            {
-	              part.write("D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\images\\"+email+"_"+fileName2 );
+	              part.write("D:\\LTI Work Related\\OJT\\IP Development\\EmployeeTalentPortal\\src\\main\\webapp\\assets\\images\\"+email+"_"+update_photo );
 	            }	
 			}   
 			
 			System.out.println(update_resume);
 			System.out.println(update_photo);
-            
+			System.out.println(p_skill);
+			System.out.println(s_skill);
+			Connection conn = Data.getDBConnection();
+            Data.updateEmployeeDetails(conn,emp_id,p_skill,s_skill,lang,update_resume,update_photo);
+            response.sendRedirect("employee_dashboard.jsp");
 	}
 	catch(Exception e)
 	{

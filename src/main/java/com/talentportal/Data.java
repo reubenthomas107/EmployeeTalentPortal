@@ -10,7 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServlet;
 
 public class Data{
@@ -111,6 +118,21 @@ public class Data{
 	return encrypted_password;
 }
 
+public static boolean duplicateValidation(Connection conn, String email) throws SQLException{
+	String query = "SELECT email_id FROM employee WHERE email_id=?";
+	PreparedStatement stmt = conn.prepareStatement(query);
+	stmt.setString(1, email);
+	ResultSet rs = stmt.executeQuery();
+	if (!rs.isBeforeFirst()) 
+	{    
+	    return true;
+	}
+	System.out.println("Email already Exists");
+	return false;
+}
+	
+	
+	
 public static int employeeRegistration(Connection conn, String email, String firstname, String lastname, Date dob, String resume_name, String mobileno, String gender) throws SQLException {
 	String query = "INSERT INTO employee (email_id,first_name,last_name,dob,resume,mobile_no,gender) Values(?,?,?,?,?,?,?)";
 	
@@ -159,6 +181,26 @@ public static void employeeSubmission(Connection conn, String email, String admi
 	if(!rows) {
 		System.out.println("Updated registration successfully. Added to Registration DB");
 	}
+}
+
+
+public static void updateEmployeeDetails(Connection conn, int emp_id, String p_skill,String s_skill,String lang,String update_resume,String update_photo) throws SQLException {
+	String query = "UPDATE employee_details SET primary_skill=?,secondary_skill=?,language_pref=?,profile_img=? WHERE emp_id=?";
+	PreparedStatement stmt = conn.prepareStatement(query);
+	stmt.setString(1, p_skill);
+	stmt.setString(2, s_skill);
+	stmt.setString(3, lang);
+	stmt.setString(4, update_photo);
+	stmt.setInt(5, emp_id);
+	stmt.execute();
+	
+	String query1 = "UPDATE employee SET resume=? WHERE emp_id=?";
+	PreparedStatement stmt2 = conn.prepareStatement(query1);
+	stmt2.setString(1, update_resume);
+	stmt2.setInt(2, emp_id);
+	stmt2.execute();
+	
+	System.out.println("Updated employee details successfully");
 }
 
 
@@ -239,9 +281,44 @@ public static void adminApproval(Connection conn, String reg_id) throws SQLExcep
 	userGenerate(conn,emp_id,email_id,password);
 	
 	//mail generation function here
-	
+	sendEmail(email_id,random_password);
 	
 }
+
+public static void sendEmail(String email_id, String password) throws SQLException {
+	final String sender_name="ltialentportal@gmail.com";
+	final String sender_pass="LTI@portal1";
+	
+	String email_subject = "EmployeeTalent - Registration Approved!";
+	String email_body = ("Your registration was approved successfully.\n\n\nUsername : "+email_id+"\n Password : "+password);
+	
+	Properties props=new Properties();
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.port", "587");
+    props.put("mail.smtp.starttls.enable", "true");
+    Session session=Session.getDefaultInstance(props,new javax.mail.Authenticator()
+    {
+    	protected PasswordAuthentication getPasswordAuthentication() 
+    	{
+    		return new PasswordAuthentication(sender_name,sender_pass);
+    	}
+    });
+    try 
+    {
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(sender_name));
+        message.addRecipient(Message.RecipientType.TO,new InternetAddress(email_id));
+        message.setSubject(email_subject);
+        message.setText(email_body);
+        Transport.send(message);
+    }
+    catch(Exception e) {
+        e.printStackTrace();
+    }
+	
+}
+
 
 public static void userGenerate(Connection conn, String emp_id, String email_id, String password) throws SQLException {
 	String query = "INSERT INTO user (email_id,password,emp_id) VALUES (?,?,?)";

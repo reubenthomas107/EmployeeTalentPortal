@@ -18,7 +18,10 @@ if(old_val!=null)
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <link rel="stylesheet" href="/assets/css/style.css">
+    
+    
+    
+    <link rel="stylesheet" href="assets/css/style.css">
 <meta charset="ISO-8859-1">
 <title>Employee Talent Portal</title>
 
@@ -44,11 +47,9 @@ function failed_login()
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
 		<div class="login-form">
 		    <form action="Login" method="post">
-		        <div class="">
-	
-		        </div>
 		        
-		        <h2 class="text-center">Login</h2>
+		        
+		        <h2 class="text-center mb-4">Login</h2>
 		        <div class="form-group">
 		            <input type="text" name="username" class="form-control" placeholder="Email-Username" required="required">
 		        </div>

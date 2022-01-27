@@ -51,13 +51,24 @@ ResultSet rs = stmt.executeQuery();
                 <th scope="col">Mobile Number</th> 
                 <th scope="col">Resume</th>
                 <th scope="col">Approval Status</th>
+                <th></th>
               </tr>
               
               
             </thead>
             <tbody>
-            <% while(rs.next()){ %>
-              <tr>
+            <% 
+            if (!rs.isBeforeFirst()) 
+            { 
+            %> 
+            <td class="lead" style="text-align:center;" colspan="8">No pending applications to approve</td>
+            <% } 
+            
+            else
+            {  
+            
+             while(rs.next()){ %>
+              <tr class="align-middle">
                 <td scope="row"><%= rs.getString(1) %></td>
                 <td><%= rs.getString(2) %></td>
                 <td><%= rs.getString(3) %></td>
@@ -65,18 +76,18 @@ ResultSet rs = stmt.executeQuery();
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
                 <td>
-                <a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="far fa-edit"></i>View</a>
+                <a class="btn btn-xs btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a>
                 </td>
-                 <td>
-                 <form action="AdminApproval" method="post">
-					  <div class="col-6">
-					  <button type="submit" class="btn btn-success btn-rounded btn-xs">Approve</button>
+                 <td colspan="2" class="d-flex">              
+                 <form action="AdminApproval" method="post" class="col-6 border">
+					  <div class="col-12">
+					  <button type="submit" class="btn btn-success btn-rounded btn-xs form-control">Approve</button>
 						<input type="hidden" id="adminapprove" name="adminapprove" value="<%= rs.getString(9) %>"/>
 					  </div>
 				  </form>
-				  <form action="AdminRejected" method="post">
-					  <div class="col-6">
-							<button type="submit" class="btn btn-danger btn-rounded btn-xs">Reject</button>
+				  <form action="AdminRejected" method="post" class="col-6">
+					  <div class="col-12">
+							<button type="submit" class="btn btn-danger btn-rounded btn-xs form-control">Reject</button>
 							<input type="hidden" id="adminreject" name="adminreject" value="<%= rs.getString(9) %>"/>
 						</div>
 				  </form>
@@ -84,18 +95,13 @@ ResultSet rs = stmt.executeQuery();
                 </td>
               </tr>
               
-              <% } %>
+              <% }} %>
             </tbody>
           </table>
     </div>
 </div>
 </main>
-<!---->
-<!---->
-<footer >
-  <div class="container bg-info p-5">
-    </div>
-</footer>
+
 </body>
 <style>
 .navbar-brand{

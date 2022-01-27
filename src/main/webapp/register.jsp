@@ -3,11 +3,30 @@
 <!DOCTYPE html>
 <html>
 
+<% 
+String reg_f = "";
+reg_f =(String) session.getAttribute("registration_failed"); 
+%>
+
+
+
+<script>
+function failed_registration()
+{
+	var msg="<%=reg_f%>";
+	console.log(msg);
+	if (msg!="null")
+	{
+		alert(msg);
+	}
+}</script>
+
+
 <meta charset="ISO-8859-1">
 <html lang="en">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -15,10 +34,12 @@
   <script src="script.js" type="text/javascript"></script>
   <title>Signup Page</title>
 </head>
-<body>
-<div class="container py-5 h-100">
+<body onload="return failed_registration();">
+
+
+<div class="container px-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="col-12">
   <div class="login-form">
     <form name="myForm2" onsubmit="return validateSignup()" action="Register" method="post" enctype="multipart/form-data">
       <h2 class="text-center">Sign Up</h2>

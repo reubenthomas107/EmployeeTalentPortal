@@ -57,30 +57,35 @@ ResultSet rs = stmt.executeQuery();
               
             </thead>
             <tbody>
-            <% while(rs.next()){ %>
-              <tr>
+            <% 
+            if (!rs.isBeforeFirst()) 
+            { 
+            %> 
+            <td class="lead" style="text-align:center;" colspan="8">No Approvals present</td>
+            <% 
+            } 
+           
+            else
+            {  
+           		while(rs.next()){ %>
+              <tr class="align-middle">
                 <td scope="row"><%= rs.getString(1) %></td>
                 <td><%= rs.getString(2) %></td>
                 <td><%= rs.getString(3) %></td>
                 <td><%= rs.getString(4) %></td>
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
-                <td><a class="btn btn-sm btn-info" href="#approve"><i class="far fa-edit"></i>View</a></td>
+                <td><a class="btn btn-xs btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a></td>
                 <td><%= rs.getString(8) %></td>
               </tr>
               
-              <% } %>
+              <% }}%>
             </tbody>
           </table>
     </div>
 </div>
 </main>
-<!---->
-<!---->
-<footer >
-  <div class="container bg-info p-5">
-    </div>
-</footer>
+
 </body>
 <style>
 .navbar-brand{

@@ -19,7 +19,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand ms-3" href="#"><img src='assets/images/ltilogo.png' height="35", width="35"></a>
+        <a class="navbar-brand ms-3" href="employee_dashboard.jsp"><img src='assets/images/ltilogo.png' height="35", width="35"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -29,41 +29,14 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="employee_dashboard.jsp">Home</a>
-        </li>
-    
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Categories
-            </a>
-            <ul class="dropdown-menu me-5 mt-2" style="float: left;" aria-labelledby="navbarDropdown">
-                
-                <li><a class="dropdown-item" href="#">Category</a></li>           
-            </ul>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="">Search Products</a>
-        </li>
+        		</li>
+
         </ul>
         <div class="d-flex">
-            <div class="nav-item mt-1 me-4">      
-               
-                <a class="nav-link disabled">Welcome, {{user.first_name}} {{user.last_name}}</a>
-                
-            </div>
-
-            
-            <div class="nav-item dropdown me-3">
-                <a class="nav-link " href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="fa fa-user" style="font-size:26px; color: black;" aria-hidden="true"></i>
-                </a>
-                <ul class="dropdown-menu mt-2" style="left: auto; right: 0px;" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="">Account</a></li>
-                    <li><a class="dropdown-item" href="<%=request.getContextPath()%>/Logout">Logout</a></li>
-                </ul>
-            </div>
+            <div class="nav-item me-3">
+               <a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/Logout">Logout</a>
+               </li>
+   			</div>
         </div>
     </div>
     </div>
