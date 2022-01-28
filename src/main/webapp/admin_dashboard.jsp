@@ -50,7 +50,7 @@ ResultSet rs = stmt.executeQuery();
                 <th scope="col">DOB</th>
                 <th scope="col">Mobile Number</th> 
                 <th scope="col">Resume</th>
-                <th scope="col">Approval Status</th>
+                <th scope="col" style="text-align:center;">Approve/Reject</th>
                 <th></th>
               </tr>
               
@@ -75,11 +75,28 @@ ResultSet rs = stmt.executeQuery();
                 <td><%= rs.getString(4) %></td>
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
+                
+                <% 
+	            if (rs.getString(7)==null) 
+	            { 
+	            %>
+                <td>
+                <a class="btn btn-xs btn-info" onclick="(function(){alert('Resume not uploaded');return false;})();return false;">View</a><a class="px-3 btn-xs"><i class="bi bi-download"></i></a>
+                </td>
+                <% 
+	            }
+	            else
+	            {
+             	%>
                 <td>
                 <a class="btn btn-xs btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a>
+                <a download class="px-3 btn-xs" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="bi bi-download"></i></a>
                 </td>
+                <% } %>
+                
+                
                  <td colspan="2" class="d-flex">              
-                 <form action="AdminApproval" method="post" class="col-6 border">
+                 <form action="AdminApproval" method="post" class="col-6">
 					  <div class="col-12">
 					  <button type="submit" class="btn btn-success btn-rounded btn-xs form-control">Approve</button>
 						<input type="hidden" id="adminapprove" name="adminapprove" value="<%= rs.getString(9) %>"/>

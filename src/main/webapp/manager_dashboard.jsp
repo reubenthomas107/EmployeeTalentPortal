@@ -88,14 +88,31 @@ ResultSet rs = stmt1.executeQuery();
             else
             {        
               while(rs.next()){ %>
-              <tr>
+              <tr class="align-middle">
                 <td scope="row" style="text-align: center;"><%= rs.getString(1) %></td>
                 <td><%= rs.getString(2) %></td>
                 <td><%= rs.getString(3) %></td>
                 <td><%= rs.getString(4) %></td>
                 <td><%= rs.getString(5) %></td>
                 <td><%= rs.getString(6) %></td>
-                <td><a class="btn btn-xs btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a></td>
+                
+                <% 
+	            if (rs.getString(7)==null) 
+	            { 
+	            %>
+                <td>
+                <a class="btn btn-xs btn-info" onclick="(function(){alert('Resume not uploaded');return false;})();return false;">View</a><a class="px-3 btn-xs"><i class="bi bi-download"></i></a>
+                </td>
+                <% 
+	            }
+	            else
+	            {
+             	%>   
+                <td><a class="btn btn-xs btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>">View</a>
+                <a download class="px-3 btn-xs" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(4) %>&filename=<%= rs.getString(7) %>"><i class="bi bi-download"></i></a>
+                </td>
+                <% } %>
+                
                 <td><%= rs.getString(8) %></td>
               </tr>
               

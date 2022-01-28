@@ -44,6 +44,17 @@ session.setAttribute("old_picture", rs1.getString(13));
 
 %>
 <%
+	String resume_link = "";
+	if(rs.getString(6)==null)
+	{
+		resume_link = "No CV Uploaded";
+	}
+	else
+	{
+	resume_link = rs.getString(6);
+	System.out.println(resume_link);
+	}
+
 	String image_link = "";
 	if(rs1.getString(13).equals("employee.jpg"))
 	{
@@ -67,8 +78,9 @@ session.setAttribute("old_picture", rs1.getString(13));
         <div class="px-4 mx-4">
             <div class="card">
                 <div class="card-body">
-                    <center class="m-t-30"> <img src="assets/images/<%= image_link %>" class="rounded-circle" width="150" height="150" />
+                    <center class="m-t-30"> <img src="assets/images/<%= image_link %>" class="rounded-circle" width="180" height="200" />
                         <h4 class="card-title m-t-10"> </h4>
+                        <br>
                         <h6 class="card-subtitle" id="name-data-user"><%= rs.getString(3) %> <%= rs.getString(4) %></h6>
                     </center>
                 </div>
@@ -101,7 +113,7 @@ session.setAttribute("old_picture", rs1.getString(13));
        
             <div class="col-sm-8">
             <a class="btn btn-sm btn-info" target="_blank" href="${pageContext.request.contextPath}/RenderPdf?email=<%= rs.getString(2) %>&filename=<%= rs.getString(6) %>">
-                <input type="text" class="form-control" id="resume" name="resume" value="<%= rs.getString(6) %>">        
+                <input type="text" class="form-control" id="resume" name="resume" value="<%= resume_link %>">        
          	</a>
          </div>
         </div>
@@ -118,7 +130,7 @@ session.setAttribute("old_picture", rs1.getString(13));
 		
 		
      
-     <%!  
+     <%  
      	String p_skill="";
      	String s_skill="";
      	String lang="Please select your language";

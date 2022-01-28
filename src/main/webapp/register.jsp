@@ -19,7 +19,10 @@ function failed_registration()
 	{
 		alert(msg);
 	}
-}</script>
+}
+
+
+</script>
 
 
 <meta charset="ISO-8859-1">
@@ -31,9 +34,10 @@ function failed_registration()
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="script.js" type="text/javascript"></script>
-  <title>Signup Page</title>
+  <script src="assets/js/script.js" type="text/javascript"></script>
+  <title>Signup Page</title> 
 </head>
+
 <body onload="return failed_registration();">
 
 
@@ -46,10 +50,10 @@ function failed_registration()
       <p class="text-center">Please fill your details to register your account!</p> 
       <br>      
       <div class="form-group">
-          <input type="text" id="names" name="firstname" class="form-control" placeholder="First Name" required="required">
+          <input type="text" id="names" name="firstname" class="form-control" placeholder="First Name" required="required" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)">
       </div>
       <div class="form-group">
-          <input type="text" id="names" name="lastname" class="form-control" placeholder="Last Name" required="required">
+          <input type="text" id="names" name="lastname" class="form-control" placeholder="Last Name" required="required" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)">
       </div>
       <div class="form-group">
           <input type="text" id="email" name="email" class="form-control" placeholder="Email-ID" required="required">
@@ -70,7 +74,7 @@ function failed_registration()
     </div>
   
   	<div class="form-group">
-         <input class="form-control form-control-md" name="resume" type="file" accept="application/pdf, application/msword"/>
+         <input class="form-control form-control-md" name="resume" type="file" required accept="application/pdf, application/msword"/>
          <div class="small text-muted mt-2">Upload your CV/Resume </div>
 
       </div>

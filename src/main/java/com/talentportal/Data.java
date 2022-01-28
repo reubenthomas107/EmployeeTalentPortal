@@ -243,9 +243,10 @@ public static void managerSubmission(Connection conn, int employee_id) throws SQ
 	stmt.setInt(2, employee_id);
 	boolean rows = stmt.execute();	
 	
-	String query1 = "INSERT INTO employee_details (emp_id) VALUES (?)";
+	String query1 = "INSERT INTO employee_details (emp_id,profile_img) VALUES (?,?)";
 	PreparedStatement stmt2 = conn.prepareStatement(query1);
 	stmt2.setInt(1, employee_id);
+	stmt2.setString(2, "employee.jpg");
 	stmt2.execute();
 	
 	if(!rows) {
@@ -290,7 +291,7 @@ public static void sendEmail(String email_id, String password) throws SQLExcepti
 	final String sender_pass="LTI@portal1";
 	
 	String email_subject = "EmployeeTalent - Registration Approved!";
-	String email_body = ("Your registration was approved successfully.\n\n\nUsername : "+email_id+"\n Password : "+password);
+	String email_body = ("Your registration was approved successfully.\n\n\nUsername : "+email_id+"\nPassword : "+password);
 	
 	Properties props=new Properties();
     props.put("mail.smtp.host", "smtp.gmail.com");

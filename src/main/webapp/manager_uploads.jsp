@@ -21,13 +21,13 @@
 <header>
  
 </header>
-<form action="ManagerUploads" method="POST" enctype="multipart/form-data">
+<form action="ManagerUploads" method="POST" enctype="multipart/form-data" onsubmit="return validateBulkFile()">
 	<div class="form-group">
 		<div class="fullbody">
 		<div>
 		  <label for="input" id="label">
 			  <ion-icon name="cloud-upload-outline"></ion-icon>
-			  <span id="span">Upload your file here</span>
+			  <span id="span">Bulk upload CV's here</span>
 			  <input id="input" name="bulkupload" type="file">
 		  </label>
 				<button type="submit">Upload</button>
@@ -36,7 +36,7 @@
 			<a href="download_template.jsp" style ="text-decoration:none";>
 				<label  id="label">
 				  <ion-icon name="cloud-download-outline"></ion-icon>
-				  <span id="#">Download your file here</span>
+				  <span id="#">Download Template for CVs</span>
 				</label>
 				<button disabled>Download</button></a>
 				
@@ -134,6 +134,7 @@ padding-left:5px;
 }
 </style>
 <script>
+
 document.getElementById("input").addEventListener("change", (e) => {
       document.getElementById("span").innerText = e.target.files[0].name;
     });
